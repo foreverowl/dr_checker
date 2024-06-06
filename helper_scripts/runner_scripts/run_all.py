@@ -1,4 +1,6 @@
 import argparse
+import shlex
+import subprocess
 from components import *
 import time
 import sys
@@ -51,9 +53,8 @@ def setup_args():
 
     return parser
 
-
 def get_bin_path(bin_name):
-    out_p = subprocess.check_output('which ' + bin_name, shell=True)
+    out_p = subprocess.check_output(['which', shlex.quote(bin_name)])
     return out_p.strip()
 
 
