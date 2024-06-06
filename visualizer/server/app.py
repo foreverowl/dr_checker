@@ -5,7 +5,7 @@ List of RESTful route
 import os
 from datetime import timedelta
 from functools import update_wrapper
-from flask import Flask, jsonify, make_response, request, current_app
+from flask import Flask, jsonify, make_response, request, current_app, escape
 import utils
 
 
@@ -103,9 +103,9 @@ def get_result(filename):
 @crossdomain(origin='*')
 def get_sourcecode(path):
     """
-    This route rreturns the sourcecode of the requested file if it exists
+    This route returns the sourcecode of the requested file if it exists
     """
-    path = path.replace('*', '/')
+    path = escape(path).replace('*', '/')
     local_path_to_sourcecode = os.path.join(app.config["SOURCECODE_DIR"], path)
     resp = "No such file..."
     if os.path.exists(local_path_to_sourcecode):
@@ -116,6 +116,7 @@ def get_sourcecode(path):
 
 if __name__ == "__main__":
     if app.config["RUN_REMOTE"]:
-        app.run(host='0.0.0.0')
+        app.run(host='127.0.0.1')
     else:
         app.run()
+
